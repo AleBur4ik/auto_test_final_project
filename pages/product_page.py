@@ -17,14 +17,12 @@ class ProductPage(BasePage):
             *ProductPageLocators.BASKET_BTN), "basket_btn is not presented"
 
     def add_to_basket(self):
-        name_product = self.browser.find_element(*ProductPageLocators.NAME_PRODUCT).text
-        price_product = \
-        self.browser.find_element(*ProductPageLocators.PRICE_PRODUCT).text.split('&')[0]
         self.browser.find_element(*ProductPageLocators.BASKET_BTN).click()
-        self.solve_quiz_and_get_code()
-        name_basket = self.browser.find_element(*ProductPageLocators.NAME_BASKET).text
-        price_basket = self.browser.find_element(*ProductPageLocators.PRICE_BASKET).text
-        assert name_basket == name_product, f"Ошибка товара ({name_product} =! {name_basket})"
-        assert price_basket == price_product, f"Ошибка цены ({price_product} =! {price_basket})"
-        print(f"Товар '{name_product}' добавлен в корзину")
-        print(f"Стоимость : {price_product}")
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_have_disappeard(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is not dissappeard, but should be"
