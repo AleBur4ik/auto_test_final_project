@@ -20,7 +20,7 @@ class BasePage():
         link.click()
 
     def go_to_basket_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOOK_BASKET)
+        link = self.browser.find_element(*BasePageLocators.BASKET_LOOK_BTN)
         link.click()
 
     def should_be_login_link(self):
