@@ -2,6 +2,7 @@ import time
 
 from .pages.product_page import ProductPage
 from .pages.basket_page import BasketPage
+from .pages.login_page import LoginPage
 import pytest
 
 links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
@@ -14,6 +15,33 @@ links = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?pr
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
          "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"]
+
+
+@pytest.mark.mytest1
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope='function', autouse=True)
+    def setup(self, browser):
+        self.product_link = 'http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear'
+        self.link = 'https://selenium1py.pythonanywhere.com/ru/'
+        page = LoginPage(browser, self.link)
+        page.open()
+        page.go_to_login_page()
+        email = str(time.time()) + 'xaxa@pochta.ru'
+        password = 'adjDF454335DFHTtgffkd'
+        page.register_new_user(email, password)
+        page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser):
+        page = ProductPage(browser, self.product_link)
+        page.open()
+        page.should_not_be_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, self.product_link)
+        page.open()
+        page.should_be_product_page()
+        page.add_to_basket()
+        page.solve_quiz_and_get_code()
 
 
 @pytest.mark.myskip
